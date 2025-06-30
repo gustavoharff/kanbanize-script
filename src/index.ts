@@ -12,6 +12,9 @@ import {
   decimalToMinutes,
 } from "./utils/time";
 import path from "path";
+import "dayjs/locale/pt-br";
+
+dayjs.locale("pt-br");
 
 async function getPonto() {
   const Authorization = `Bearer ${process.env.PONTO_TOKEN}`;
@@ -69,8 +72,8 @@ async function main() {
   const content = [
     "# Horas Trabalhadas - Ponto vs Kanbanize",
     "",
-    "| Data | Horas Ponto | Horas Kanbanize | Diferença em minutos |",
-    "|------|-------------|-----------------|----------------------|",
+    "| Data | Horas Ponto | Horas Kanbanize | Minutos Kanbanize | Diferença em minutos |",
+    "|------|-------------|-----------------|-------------------|----------------------|",
   ];
 
   for (const registro of ponto.registrosPonto) {
@@ -88,7 +91,7 @@ async function main() {
     const diff = kanbanizeMinutes - pontoMinutes;
 
     content.push(
-      `| ${registro.data} | ${decimalToTime(registro.fechamentoDiario)} | ${secondsToTime(kanbanizeSeconds)} | ${diff} |`
+      `| ${dayjs(registro.data).format('ddd - DD/MM/YY')} | ${decimalToTime(registro.fechamentoDiario)} | ${secondsToTime(kanbanizeSeconds)} | ${kanbanizeMinutes} | ${diff} |`
     );
   }
 
@@ -105,6 +108,8 @@ async function main() {
   });
 
   fs.writeFileSync(file, prettyContent, "utf-8");
+
+  console.log(`Arquivo gerado: ${file}`);
 }
 
 main();
