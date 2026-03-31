@@ -72,8 +72,8 @@ async function main() {
   const content = [
     "# Horas Trabalhadas - Ponto vs Kanbanize",
     "",
-    "| Data | Horas Ponto | Horas Kanbanize | Minutos Kanbanize | Diferença em minutos | Diferença em horas |",
-    "|------|-------------|-----------------|-------------------|----------------------|--------------------|",
+    "| Data | Horas Ponto | Horas Kanbanize | Diferença em horas | Minutos Ponto | Minutos Kanbanize | Diferença em minutos |",
+    "|------|-------------|-----------------|--------------------|--------------------|-------------------|----------------------|",
   ];
 
   let totalPontoMinutes = 0;
@@ -97,14 +97,14 @@ async function main() {
     totalKanbanizeSeconds += kanbanizeSeconds;
 
     content.push(
-      `| ${dayjs(registro.data).format('ddd - DD/MM')} | ${decimalToTime(registro.fechamentoDiario)} | ${secondsToTime(kanbanizeSeconds)} | ${kanbanizeMinutes} | ${diff} | ${decimalToTime(diff / 60)} |`
+      `| ${dayjs(registro.data).format('ddd - DD/MM')} | ${decimalToTime(registro.fechamentoDiario)} | ${secondsToTime(kanbanizeSeconds)} | ${decimalToTime(diff / 60)} | ${pontoMinutes} | ${kanbanizeMinutes} | ${diff} |`
     );
   }
 
   const totalKanbanizeMinutes = secondsToMinutes(totalKanbanizeSeconds);
   const totalDiff = totalKanbanizeMinutes - totalPontoMinutes;
   content.push(
-    `| **Total** | **${decimalToTime(totalPontoMinutes / 60)}** | **${secondsToTime(totalKanbanizeSeconds)}** | **${totalKanbanizeMinutes}** | **${totalDiff}** | **${decimalToTime(totalDiff / 60)}** |`
+    `| **Total** | **${decimalToTime(totalPontoMinutes / 60)}** | **${secondsToTime(totalKanbanizeSeconds)}** | **${decimalToTime(totalDiff / 60)}** | **${totalPontoMinutes}** | **${totalKanbanizeMinutes}** | **${totalDiff}** |`
   );
 
   const folder = path.join(__dirname, "..", "dist");

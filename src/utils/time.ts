@@ -9,8 +9,11 @@ export function secondsToTime(seconds: number): string {
 }
 
 export function decimalToTime(decimal: number) {
-  const hours = Math.floor(decimal);
-  const minutes = Math.round((decimal - hours) * 60);
+  const sign = decimal < 0 ? "-" : "";
+  const abs = Math.abs(decimal);
+
+  const hours = Math.floor(abs);
+  const minutes = Math.round((abs - hours) * 60);
 
   const finalHours = minutes === 60 ? hours + 1 : hours;
   const finalMinutes = minutes === 60 ? 0 : minutes;
@@ -18,7 +21,7 @@ export function decimalToTime(decimal: number) {
   const hoursStr = String(finalHours).padStart(2, "0");
   const minutesStr = String(finalMinutes).padStart(2, "0");
 
-  return `${hoursStr}:${minutesStr}`;
+  return `${sign}${hoursStr}:${minutesStr}`;
 }
 
 export function decimalToMinutes(decimal: number): number {
